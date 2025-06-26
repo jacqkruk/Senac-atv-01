@@ -62,6 +62,7 @@ public class ProdutosDAO {
             // Fechando recursos
             resultset.close();
             prep.close();
+            conn.close();
             
         } catch (SQLException ex) {
             System.out.println("Não foi possível conectar ao banco de dados");
