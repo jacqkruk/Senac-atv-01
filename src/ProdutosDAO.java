@@ -25,9 +25,9 @@ public class ProdutosDAO {
     
     public void cadastrarProduto (ProdutosDTO produto){
         int status;
-        conn = new conectaDAO().connectDB();
-        
+       
         try {
+            conn = new conectaDAO().connectDB();
             prep  = conn.prepareStatement("INSERT INTO produtos(nome, valor) VALUES(?,?)");
         
             prep.setString(1, produto.getNome());
@@ -39,16 +39,36 @@ public class ProdutosDAO {
             JOptionPane.showMessageDialog(null, "Erro ao cadastrar: " + ex.getMessage());
         }
        
-        
     }
     
     public ArrayList<ProdutosDTO> listarProdutos(){
+        try {
+            conn = new conectaDAO().connectDB();
+            
+            String sql = "SELECT id, nome, valor, status FROM produtos";
+            prep = conn.prepareStatement(sql);
+            resultset = prep.executeQuery();
+            
+            // Loop pelos resultados
+            while (resultset.next()) {
+                ProdutosDTO produto = new ProdutosDTO();
+                produto.setId(resultset.getInt("id"));
+                produto.setNome(String.valueOf(resultset.getDouble("valor")));
+                produto.setStatus(resultset.getString("status"));
+                
+                listagem.add(produto);
+            }
+            
+            // Fechando recursos
+            resultset.close();
+            prep.close();
+            
+        } catch (SQLException ex) {
+            System.out.println("Não foi possível conectar ao banco de dados");
+        }
         
         return listagem;
     }
     
-    
-    
-        
 }
 
