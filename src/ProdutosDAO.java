@@ -70,6 +70,28 @@ public class ProdutosDAO {
         
         return listagem;
     }
+
+    public void venderProduto(int parseInt) {
+       String sql = "UPDATE produtos SET status = ? WHERE id = ?";
+       
+       try {
+            conn = new conectaDAO().connectDB();
+            prep = conn.prepareStatement(sql);
+            
+            String status = "Vendido";
+            
+            prep.setString(1, status);
+            prep.setInt(2, parseInt);
+            prep.executeUpdate();
+            
+            // Fechando recursos
+            prep.close();
+            conn.close();
+                    
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Não foi possível completar a ação.");
+        }
+    }
     
 }
 
